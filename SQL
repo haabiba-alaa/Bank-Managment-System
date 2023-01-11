@@ -1,0 +1,292 @@
+-Create statements 
+
+CREATE TABLE Departments(
+D_id NUMBER(20) PRIMARY KEY,
+D_name VARCHAR(20));
+
+CREATE TABLE Bank(
+Bank_id NUMBER(20) PRIMARY KEY,
+Bank_name VARCHAR(20) ,
+Headquarter_br_id NUMBER(20)
+);
+
+CREATE TABLE Branch (
+ Br_id NUMBER(20) PRIMARY KEY,
+ Bank_id NUMBER(20) NOT NULL REFERENCES Bank(Bank_id), 
+ Branch_name VARCHAR(20),
+ Country VARCHAR(20),
+ City VARCHAR(20),
+ Street VARCHAR(20),
+ Street_no NUMBER(20)
+);
+
+ALTER TABLE Bank
+ADD CONSTRAINT hq_fk FOREIGN KEY(Headquarter_br_id) REFERENCES Branch(Br_id);
+
+CREATE TABLE Employee(
+  E_id NUMBER(20) PRIMARY KEY,
+  SSN NUMBER(20) UNIQUE NOT NULL,
+  F_name VARCHAR(20), 
+  Mid_name VARCHAR(20), 
+  L_name VARCHAR(20),
+  DOB date, 
+  Gender VARCHAR(1),
+  Salary NUMBER(20), 
+  Street VARCHAR(20),
+  Building_no NUMBER(20),
+  Unit_no NUMBER(20),
+  D_id NUMBER(20) REFERENCES Departments(D_id),
+  Br_id NUMBER(20) REFERENCES Branch(Br_id)
+);
+
+CREATE TABLE E_phone(
+E_id NUMBER(20) REFERENCES Employee(E_id),
+Country_code NUMBER(20),
+P_num NUMBER(20)
+);
+
+CREATE TABLE E_email(
+E_id NUMBER(20) REFERENCES Employee (E_id),
+E_mail VARCHAR(20)
+);
+
+CREATE TABLE Loan(
+Loan_id NUMBER(20) PRIMARY KEY,
+Loan_type VARCHAR(20),
+Br_id  NUMBER(20) REFERENCES Branch (Br_id)
+);
+
+CREATE TABLE Payment(
+Loan_id NUMBER(20) REFERENCES Loan(Loan_id),
+Payment_no NUMBER(20) NOT NULL,
+Amount NUMBER(20) ,
+Type VARCHAR(20)
+);
+
+CREATE TABLE Customer(
+C_id NUMBER(20) PRIMARY KEY,
+SSN NUMBER(20) UNIQUE NOT NULL,
+F_name VARCHAR(20),
+Mid_name VARCHAR(20),
+L_name VARCHAR(20),
+DOB Date,
+Gender VARCHAR(1),
+Street VARCHAR(20),
+Building_no NUMBER(20),
+Unit_no NUMBER(20)
+);
+
+CREATE TABLE Account(
+Accont_no NUMBER(20) PRIMARY KEY,
+A_type VARCHAR(20),
+Balance NUMBER(30),
+Branch_id NUMBER(20) REFERENCES Branch(Br_id),
+C_id NUMBER(20) REFERENCES customer(C_id) 
+);
+
+CREATE TABLE C_Phone(
+C_id NUMBER(20) REFERENCES customer (C_id),
+Countery_code NUMBER(20),
+C_NUMBER NUMBER(20)
+);
+
+CREATE TABLE C_Email(
+C_id NUMBER(20) REFERENCES customer (C_id),
+C_Email VARCHAR(20)
+);
+
+CREATE TABLE Loans_availed_by_customers(
+C_id NUMBER(20) REFERENCES Customer(C_id),
+Loan_id NUMBER(20) REFERENCES Loan(Loan_id)
+);
+
+—Insert statements
+
+INSERT INTO departments
+VALUES (1,'finance');
+INSERT INTO departments
+VALUES (2,'hr');
+INSERT INTO departments
+VALUES (3,'it');
+INSERT INTO Departments
+VALUES (4,'finance');
+INSERT INTO departments
+VALUES (5,'hr');
+
+INSERT INTO Bank
+VALUES (1,'Banque Misr Egypt',NULL);
+INSERT INTO bank
+VALUES (2,'Banque Misr France',NULL);
+INSERT INTO bank
+VALUES (3,'Banque Misr UAE',NULL);
+INSERT INTO bank
+VALUES (4,'Banque Misr Liban',NULL);
+INSERT INTO bank
+VALUES (5,'Banque Misr Italy',NULL);
+
+INSERT INTO Branch 
+VALUES (1,1,'Downtown Branch','Egypt','Cairo','Mohamed Farid St',151);
+INSERT INTO Branch 
+VALUES (2,2,'Paris Branch','France','Paris','Rue Auber',9);
+INSERT INTO Branch 
+VALUES (3,3,'Dubai Branch','UAE','Dubai','Street 27','3');
+INSERT INTO Branch 
+VALUES (4,4,'Beirut Branch','Lebanon','Beirut','Riad El SOlh St','4');
+INSERT INTO Branch 
+VALUES (5,5,'Milan Branch','Italy','Milan','San Sepolcro',1);
+
+UPDATE Bank
+SET Headquarter_br_id=1
+WHERE Bank_id = 1;
+UPDATE Bank
+SET Headquarter_br_id=2
+WHERE Bank_id = 2;
+UPDATE Bank
+SET Headquarter_br_id=3
+WHERE Bank_id = 3;
+UPDATE Bank
+SET Headquarter_br_id=4
+WHERE Bank_id = 4;
+UPDATE Bank
+SET Headquarter_br_id=5
+WHERE Bank_id = 5;
+
+INSERT INTO Employee
+VALUES (1,12,'Habiba','Alaa','Eldin','17-Dec-2002','F',2000,'Street x',9,9,1,1);
+INSERT INTO Employee
+VALUES (2,13,'Habiba','Bakr','Ahmed','5-Dec-2002','F',2000,'Street y',2,2,2,2);
+INSERT INTO Employee
+VALUES (3,14,'Rana','Waheed','Tamam','1-Dec-2003','F',2000,'Street x',3,3,3,3);
+INSERT INTO Employee
+VALUES (4,15,'Khaira','Mohammed','Ahmed','5-Dec-2005','F',2000,'Street y',1,1,1,1);
+INSERT INTO Employee
+VALUES (5,16,'Wessal','Salah','Mohammed','2-Dec-2002','F',2000,'Street z',5,5,4,4);
+INSERT INTO Employee
+VALUES (6,17,'Rana','Wahid','Tammam','1-Dec-2003','F',3000,'Street x',6,6,3,3);
+
+
+INSERT INTO E_email
+VALUES (1,'h.alaa@bnk.com');
+INSERT INTO E_email
+VALUES (2,'h.bakr@bnk.com');
+INSERT INTO E_email
+VALUES (3,'rana@bnk.com');
+INSERT INTO E_email
+VALUES (4,'khaira@bnk.com');
+INSERT INTO E_email
+VALUES (4,'k@khaira.com');
+INSERT INTO E_email
+VALUES (5,'wessal@bnk.com');
+INSERT INTO E_email
+VALUES (5,'wessal@mail.com');
+
+INSERT INTO E_Phone
+VALUES (1,02,0123456789);
+INSERT INTO E_Phone
+VALUES (2,099,9876543210);
+INSERT INTO E_Phone
+VALUES (3,05,0124861012);
+INSERT INTO E_Phone
+VALUES (4,02,2170125902);
+INSERT INTO E_Phone
+VALUES (5,06,0511031712);
+
+
+INSERT INTO Customer
+VALUES (1, 12, 'Amna', 'Ahmed', 'Ahmed' , '20-JAN-2003' ,'F', 'XYZ Street' , 2 , 24);
+INSERT INTO customer
+VALUES (2, 13, 'James', 'Wiliam', 'Ahmed' , '20-JAN-2000' ,'M', 'Park Street' , 73 , 20);
+INSERT INTO customer
+VALUES (3, 14, 'Fatma', 'Gamal', 'Ahmed' , '20-May-1999' ,'F', 'Baker Street' , 26 , 2);
+INSERT INTO customer
+VALUES (4, 15, 'Ahmed', 'Salem', 'Ahmed' , '20-JAN-2003' ,'M', '75 Street' , 52 , 30);
+INSERT INTO customer
+VALUES (5, 16, 'Mona', 'Ahmed', 'Maher' , '20-JAN-2003' ,'F', 'ABC Street' , 5 , 24);
+INSERT INTO customer
+VALUES (6, 17, 'Laila', 'Ahmed', 'Hany' , '20-JAN-1998' ,'F', '8th Avenue Street' , 4 , 24);
+
+INSERT INTO C_email
+VALUES (1, 'mona@mail.com');
+INSERT INTO C_email
+VALUES (1, 'Amna@mail.com');
+INSERT INTO C_email
+VALUES (2, 'FATMA@mail.com');
+INSERT INTO C_email
+VALUES (3, 'james@mail.com');
+INSERT INTO C_email
+VALUES (4, 'ha@mail.com');
+INSERT INTO C_email
+VALUES (5, 'ha5@mail.com');
+INSERT INTO C_email
+VALUES (6, 'ha665@mail.com');
+
+
+INSERT INTO C_phone
+VALUES (1 , 20 , 123456789);
+INSERT INTO C_phone
+VALUES (2 , 20 , 123466689);
+INSERT INTO C_phone
+VALUES (2 , 20 , 123466889);
+INSERT INTO C_phone
+VALUES (3 , 20 , 123466799);
+INSERT INTO C_phone
+VALUES (4 , 20 , 113466789);
+INSERT INTO C_phone
+VALUES (5 , 20 , 223466789);
+INSERT INTO C_phone
+VALUES (6 , 20 , 123465689);
+
+INSERT INTO Account
+VALUES(1,'Personal',20,1,1);
+INSERT INTO Account
+VALUES(2,'Business',20,2,2);
+INSERT INTO Account
+VALUES(3,'Personal',20,3,3);
+INSERT INTO Account
+VALUES(4,'Business',20,4,4);
+INSERT INTO Account
+VALUES(5,'Personal',20,5,5);
+INSERT INTO Account
+VALUES(7,'Business',20,5,5);
+
+
+INSERT INTO Loan
+VALUES (1,'Student loan',1);
+INSERT INTO loan
+VALUES (2,'Mortgage',2);
+INSERT INTO loan
+VALUES (3,'Home equity',1);
+INSERT INTO loan
+VALUES (4,'Auto',3);
+INSERT INTO loan
+VALUES (5,'Payday',4);
+INSERT INTO loan
+VALUES (6,'Student',5);
+
+INSERT INTO Payment
+VALUES (1,1,20,'Cash');
+INSERT INTO Payment
+VALUES (1,2,10,'Cheque');
+INSERT INTO Payment
+VALUES (3,1,15,'Cash');
+INSERT INTO Payment
+VALUES (4,1,20,'Credit card');
+INSERT INTO Payment
+VALUES (5,1,20,'Debit card');
+INSERT INTO Payment
+VALUES (6,6,10,'Cheque');
+
+INSERT INTO loans_availed_by_customers
+VALUES (1,1);
+INSERT INTO loans_availed_by_customers
+VALUES (2,1);
+INSERT INTO loans_availed_by_customers
+VALUES (3,1);
+INSERT INTO loans_availed_by_customers
+VALUES (4,1);
+INSERT INTO loans_availed_by_customers
+VALUES (5,1);
+INSERT INTO loans_availed_by_customers
+VALUES (1,2);
+
+COMMIT;
