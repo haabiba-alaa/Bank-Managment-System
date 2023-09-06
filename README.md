@@ -1,4 +1,4 @@
-# BankManagmentSystem
+# Bank Managment System
 • Designed and implemented a comprehensive bank management system, integrating SQL database management and Oracle Forms for seamless customer transaction record keeping.
 
 • Created a robust SQL database schema to efficiently store and manage customer transactions, ensuring data integrity and security.
